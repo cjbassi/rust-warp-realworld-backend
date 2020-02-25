@@ -16,9 +16,17 @@ Originally forked from https://github.com/colinbankier/realworld-tide.
 - Setup the database by running `diesel database setup`.
 - When you are done, stop the database with `docker-compose stop`.
 
-The URL of the API will be the value of `BIND_ADDRESS` in `.env` along with `/api`, e.g. `https://127.0.0.1:3000/api`.
+The URL of the API will be the value of `BIND_ADDRESS` in `.env` along with `/api`, e.g. `https://127.0.0.1:8088/api`.
 
-RealWorld provides a [Postman collection](https://github.com/gothinkster/realworld/blob/master/api/Conduit.postman_collection.json) that you can use to test the API with [Postman](https://www.getpostman.com/), [Insomnia](https://insomnia.rest/), or others.
+To test the API, RealWorld provides a [Postman collection](https://github.com/gothinkster/realworld/blob/master/api/Conduit.postman_collection.json) that we can use.
+
+To run the tests, do the following:
+
+```bash
+git clone https://github.com/gothinkster/realworld
+cd realworld/api
+APIURL=http://localhost:8088/api ./run-api-tests.sh
+```
 
 ## Libraries used
 
