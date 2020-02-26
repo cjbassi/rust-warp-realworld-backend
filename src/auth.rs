@@ -4,6 +4,8 @@ use serde::{Deserialize, Serialize};
 use std::time::{Duration, SystemTime, UNIX_EPOCH};
 use uuid::Uuid;
 
+// According to the RealWorld API spec, clients are supposed to prefix the token with this string
+// in the Authorization header.
 const TOKEN_PREFIX: &str = "Token ";
 
 #[derive(Deserialize, Serialize, Debug, Clone)]
