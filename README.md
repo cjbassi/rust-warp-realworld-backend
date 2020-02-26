@@ -38,7 +38,6 @@ APIURL=http://localhost:8088/api ./run-api-tests.sh
 - [r2d2](https://github.com/sfackler/r2d2)
 - [rust-bcrypt](https://github.com/Keats/rust-bcrypt)
 - [serde](https://github.com/serde-rs/serde)
-- [serde_json](https://github.com/serde-rs/json)
 - [tokio](https://github.com/tokio-rs/tokio)
 - [uuid](https://github.com/uuid-rs/uuid)
 - [warp](https://github.com/seanmonstar/warp)
