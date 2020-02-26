@@ -1,8 +1,7 @@
 use jsonwebtoken::errors::Result;
 use jsonwebtoken::{decode, encode, DecodingKey, EncodingKey, Header, Validation};
 use serde::{Deserialize, Serialize};
-use std::time::Duration;
-use std::time::{SystemTime, UNIX_EPOCH};
+use std::time::{Duration, SystemTime, UNIX_EPOCH};
 use uuid::Uuid;
 
 const TOKEN_PREFIX: &str = "Token ";
@@ -14,24 +13,15 @@ pub struct Claims {
 }
 
 impl Claims {
+    fn new(user_id: Uuid, expire_in: u64) -> Self {
+        Self {
+            sub: user_id,
+            exp: seconds_from_now(expire_in),
+        }
+    }
+
     pub fn user_id(&self) -> Uuid {
         self.sub
-    }
-}
-
-pub fn encode_token(secret: &str, sub: Uuid) -> String {
-    encode(
-        &Header::default(),
-        &claims_for(sub, 3600),
-        &EncodingKey::from_secret(secret.as_ref()),
-    )
-    .unwrap()
-}
-
-fn claims_for(user_id: Uuid, expire_in: u64) -> Claims {
-    Claims {
-        sub: user_id,
-        exp: seconds_from_now(expire_in),
     }
 }
 
@@ -39,6 +29,15 @@ fn seconds_from_now(secs: u64) -> u64 {
     let expiry_time =
         SystemTime::now().duration_since(UNIX_EPOCH).unwrap() + Duration::from_secs(secs);
     expiry_time.as_secs()
+}
+
+pub fn encode_token(secret: &str, sub: Uuid) -> String {
+    encode(
+        &Header::default(),
+        &Claims::new(sub, 3600),
+        &EncodingKey::from_secret(secret.as_ref()),
+    )
+    .unwrap()
 }
 
 pub fn decode_token(secret: &str, token: &str) -> Result<Claims> {
