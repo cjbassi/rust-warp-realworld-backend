@@ -30,23 +30,17 @@ APIURL=http://localhost:8088/api ./run-api-tests.sh
 
 ## Libraries used
 
-- [blob-uuid](https://github.com/ivanceras/blob-uuid)
 - [chrono](https://github.com/chronotope/chrono)
 - [diesel](https://github.com/diesel-rs/diesel)
 - [dotenv](https://github.com/dotenv-rs/dotenv)
 - [env_logger](https://github.com/sebasmagri/env_logger/)
 - [jsonwebtoken](https://github.com/Keats/jsonwebtoken)
-- [once_cell](https://github.com/matklad/once_cell)
 - [r2d2](https://github.com/sfackler/r2d2)
-- [regex](https://github.com/rust-lang/regex)
 - [rust-bcrypt](https://github.com/Keats/rust-bcrypt)
 - [serde](https://github.com/serde-rs/serde)
 - [serde_json](https://github.com/serde-rs/json)
-- [slug-rs](https://github.com/Stebalien/slug-rs)
-- [snafu](https://github.com/shepmaster/snafu)
 - [tokio](https://github.com/tokio-rs/tokio)
 - [uuid](https://github.com/uuid-rs/uuid)
-- [validator](https://github.com/Keats/validator)
 - [warp](https://github.com/seanmonstar/warp)
 
 ## Note on session management

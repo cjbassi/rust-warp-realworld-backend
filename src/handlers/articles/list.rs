@@ -4,7 +4,6 @@ use crate::handlers::articles::responses::ArticlesResponse;
 use crate::response::Response;
 use domain::repositories::Repository;
 use serde::Deserialize;
-use std::str::FromStr;
 
 #[derive(Default, Deserialize, Debug, Clone)]
 pub struct ArticleQuery {
@@ -20,13 +19,6 @@ impl From<ArticleQuery> for domain::ArticleQuery {
             favorited: q.favorited,
             tag: q.tag,
         }
-    }
-}
-
-impl FromStr for ArticleQuery {
-    type Err = String;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        serde_urlencoded::from_str::<ArticleQuery>(s).map_err(|e| e.to_string())
     }
 }
 
