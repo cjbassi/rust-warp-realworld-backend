@@ -1,5 +1,4 @@
-use std::time::{Duration, SystemTime, UNIX_EPOCH};
-
+use chrono::{Duration, Utc};
 use jsonwebtoken::errors::Result;
 use jsonwebtoken::{decode, encode, DecodingKey, EncodingKey, Header, Validation};
 use serde::{Deserialize, Serialize};
@@ -8,7 +7,6 @@ use uuid::Uuid;
 // According to the RealWorld API spec, clients are supposed to prefix the token with this string
 // in the Authorization header.
 const TOKEN_PREFIX: &str = "Token ";
-const EXPIRATION_SECONDS: u64 = 3600; // 1 hour
 
 #[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct Claims {
@@ -17,10 +15,10 @@ pub struct Claims {
 }
 
 impl Claims {
-    fn new(user_id: Uuid, expire_in: u64) -> Self {
+    fn new(user_id: Uuid) -> Self {
         Self {
             sub: user_id,
-            exp: seconds_from_now(expire_in),
+            exp: (Utc::now() + Duration::weeks(3)).timestamp() as u64,
         }
     }
 
@@ -29,16 +27,10 @@ impl Claims {
     }
 }
 
-fn seconds_from_now(secs: u64) -> u64 {
-    let expiry_time =
-        SystemTime::now().duration_since(UNIX_EPOCH).unwrap() + Duration::from_secs(secs);
-    expiry_time.as_secs()
-}
-
 pub fn encode_token(secret: &str, sub: Uuid) -> String {
     encode(
         &Header::default(),
-        &Claims::new(sub, EXPIRATION_SECONDS),
+        &Claims::new(sub),
         &EncodingKey::from_secret(secret.as_ref()),
     )
     .unwrap()
