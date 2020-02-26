@@ -1,17 +1,14 @@
 //! A sub-module to prescribe how each domain error gets converted to an HTTP response.
 
 use jsonwebtoken::errors::Error as JwtError;
-use warp::http::response::Response;
-use warp::http::status::StatusCode;
-use warp::reply::with_status;
-use warp::reply::Reply;
+use warp::http::{response::Response, status::StatusCode};
+use warp::reply::{with_status, Reply};
 
+use crate::response::ErrorResponse;
 use domain::{
     ChangeArticleError, DatabaseError, DeleteCommentError, GetArticleError, GetUserError,
     LoginError, PasswordError, PublishArticleError, SignUpError,
 };
-
-use crate::response::ErrorResponse;
 
 impl From<JwtError> for ErrorResponse {
     fn from(_: JwtError) -> ErrorResponse {
@@ -40,7 +37,6 @@ impl From<PasswordError> for ErrorResponse {
 
 impl From<LoginError> for ErrorResponse {
     fn from(e: LoginError) -> ErrorResponse {
-        log::debug!("{}\n", "hello");
         let r = match &e {
             LoginError::NotFound => StatusCode::UNAUTHORIZED,
             LoginError::PasswordError(_) => StatusCode::INTERNAL_SERVER_ERROR,

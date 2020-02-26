@@ -1,6 +1,5 @@
 use jsonwebtoken::errors::Result;
 use jsonwebtoken::{decode, encode, DecodingKey, EncodingKey, Header, Validation};
-use log::debug;
 use serde::{Deserialize, Serialize};
 use std::time::Duration;
 use std::time::{SystemTime, UNIX_EPOCH};
@@ -20,10 +19,6 @@ impl Claims {
     }
 }
 
-fn validation() -> Validation {
-    Validation::default()
-}
-
 pub fn encode_token(secret: &str, sub: Uuid) -> String {
     encode(
         &Header::default(),
@@ -33,7 +28,7 @@ pub fn encode_token(secret: &str, sub: Uuid) -> String {
     .unwrap()
 }
 
-pub fn claims_for(user_id: Uuid, expire_in: u64) -> Claims {
+fn claims_for(user_id: Uuid, expire_in: u64) -> Claims {
     Claims {
         sub: user_id,
         exp: seconds_from_now(expire_in),
@@ -47,15 +42,12 @@ fn seconds_from_now(secs: u64) -> u64 {
 }
 
 pub fn decode_token(secret: &str, token: &str) -> Result<Claims> {
-    let decoded = decode::<Claims>(
+    decode::<Claims>(
         token.trim_start_matches(TOKEN_PREFIX),
         &DecodingKey::from_secret(secret.as_ref()),
-        &validation(),
-    );
-    if let Err(e) = &decoded {
-        debug!("Failed to decode token {}", e);
-    }
-    decoded.map(|token_data| token_data.claims)
+        &Validation::default(),
+    )
+    .map(|token_data| token_data.claims)
 }
 
 #[cfg(test)]
